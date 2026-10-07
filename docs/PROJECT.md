@@ -1,6 +1,6 @@
 # Project Writeup: Queue and Workers Platform
 
-Why this exists, how it was built, why each choice, benefits, and interview talking points.
+Why this exists, how it was built, why each choice, benefits, and design trade-offs.
 
 ## 1. The problem it solves
 
@@ -28,7 +28,7 @@ If an API does slow work (sending email, processing a file, calling a third part
 - Duplicate and retried submissions do not double-process.
 - Throughput scales by adding worker replicas.
 
-## 5. Interview talking points
+## 5. Design notes and trade-offs
 
 - At-least-once vs exactly-once: most queues deliver at-least-once, so consumers must be idempotent. This project makes idempotency explicit rather than pretending exactly-once exists.
 - Why a DLQ matters: it separates transient failures (retry) from permanent ones (inspect), so one bad message does not poison the pipeline or page you forever.
