@@ -1,0 +1,22 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose
+        run: docker compose config -q
+      - name: Compile Python
+        run: |
+          pip install redis
+          python -m py_compile common/job.py worker/worker.py loadtest/enqueue_burst.py
+      - name: API deps + compile
+        run: |
+          pip install -r api/requirements.txt
+          python -m py_compile api/main.py
